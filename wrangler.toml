@@ -1,0 +1,59 @@
+name = "ring-vault"
+compatibility_date = "2025-01-01"
+pages_build_output_dir = "dist"
+
+[build]
+command = "npm run build"
+
+[vars]
+NODE_VERSION = "20"
+# Cloudflare R2 public URL for the 1.5 GB of ring + stone GLTFs.
+# Bucket: jewelry-assets  ·  Key prefix: ring380models/
+# Example public URL: "https://pub-xxxxx.r2.dev/ring380models"
+# Leave empty for local dev — the loader falls back to /models/jewelry.
+VITE_R2_BASE_URL = ""
+
+# SPA-friendly headers: long cache on hashed assets, no cache on index.html
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.glb"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Content-Type = "model/gltf-binary"
+
+[[headers]]
+  for = "/*.gltf"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Content-Type = "model/gltf+json"
+
+[[headers]]
+  for = "/*.hdr"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.drc"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
